@@ -7,7 +7,7 @@ app.get('/client.js', function(req, res){
 });
 
 app.get('/', function(req, res){
-	res.sendFile('index.html', { root: __dirname });
+	res.sendFile('/viewtests/testboard1.html', { root: __dirname });
 });
 
 var id = 0;
