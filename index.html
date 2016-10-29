@@ -1,56 +1,66 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Socket.IO chat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #ccc; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <h4 id="message-incoming"></h4>
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Shared shapes</title>
+		<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+		</script>
+		<link
+	rel="stylesheet"
+	href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+		<script
+	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js">
+		</script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="client.js"></script>
+		<style>
+#templates {
+	width: 100%;
+	height: auto;
+	border: solid red;
+}
 
-      var socket = io();
-      
-      $('form').submit(function(){
-        socket.emit('chat message', $('#m').val());
-        socket.emit('typing', false);
-        $('#m').val('');
-        return false;
-      });
-
-      // On input field change
-      $('#m').on('input', function(){
-        
-        // If there is something typed - broadcast
-        if ($(this).val()) {
-          socket.emit('typing', true);
-        }
-
-      });
-
-      socket.on('typing', function(bool) {
-        var text = (bool) ? "Someone's typing a message..." : "";
-        $("#message-incoming").text(text);
-      });
-
-      socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
-      });
-
-    </script>
-  </body>
+#board {
+	width: 100%;
+	height: 600pt;
+	border: solid;
+}
+		</style>
+	</head>
+	<body>
+		<h1>Shapes collection</h1>
+		<label><input type="radio" name="transform" value="rotate(45deg)" />rotate 45</label>
+		<label><input type="radio" name="transform" value="scale(2)" />scale 2</label>
+		<label><input type="radio" name="transform" value="scale(0.5)" />scale 0.5</label>
+		<label><input type="radio" name="transform" value="" />(restore)</label>
+		<br/>
+		<label><input type="radio" name="fill" value="red" />red</label>
+		<label><input type="radio" name="fill" value="green" />green</label>
+		<label><input type="radio" name="fill" value="blue" />blue</label>
+		<label><input type="radio" name="fill" value="black" />black</label>
+		<div id="templates">
+			<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+	<circle r="50" cx="50" cy="50"/>
+			</svg>
+			<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+	<rect x="0" y="0" width="100" height="100"/>
+			</svg>
+			<svg xmlns="http://www.w3.org/2000/svg" width="50" height="100">
+	<polyline points="0,0 50,50 0,100" />
+			</svg>
+			<svg xmlns="http://www.w3.org/2000/svg"
+		 xmlns:xlink="http://www.w3.org/1999/xlink"
+		 width="200" height="100">
+	<defs>
+					<path id="smilePath" d="M75,25 a1,1 0 0,0 100,0" />
+	</defs>
+	<text x="0" y="100" style="stroke: #000000;">
+		<textPath xlink:href="#smilePath">
+						IS3 lets me do cool stuff!
+		</textPath>
+	</text>
+			</svg>
+		</div>
+		<div id="board"/>
+	</body>
 </html>

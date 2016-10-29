@@ -4,8 +4,8 @@ $(function() {
 		var e = $(msg.element);
 		e.attr('id', msg.id);
 		e.draggable({
+			snap: '#board',
 			drag: function(event, ui) {
-				console.log("dragging...");
 				socket.emit('drag-stop', {
 					id: event.target.id,
 					left: ui.position.left,
