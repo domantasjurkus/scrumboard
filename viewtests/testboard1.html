@@ -14,9 +14,26 @@
 
 <body>
 	<script>
-    $(document).ready(function(){
+    /*$(document).ready(function(){
 $( ".sb-resize" ).resizable();
-    })
+    })*/
+
+	
+	//Temporary socket hook-in
+	$('#btnNewTask').on("click",function() {
+		socket.emit('create', $(this).html());
+	})
+
+	//Activate bootstrap popovers and set up
+	$(document).ready(function(){
+		$('#btnNewTask').popover({content: "New Task", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});
+		$('#btnUndo').popover({content: "Undo", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});
+		$('#btnRedo').popover({content: "Redo", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true}); 
+		$('#btnDelete').popover({content: "Delete Board", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});
+		$('#btnSettings').popover({content: "Settings", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});  
+		$('#btnShare').popover({content: "Share", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true}); 
+		$('#btnChat').popover({content: "Chat", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});   
+	});
   
   </script>
 	<style>
@@ -25,15 +42,19 @@ $( ".sb-resize" ).resizable();
 			height: 100vh;
 		}
 		
+		.popover {
+			border: 0px;
+		}
+		
 		.sb-container {
 			min-width: 400px;
 		}
 		
 		.sb-board-container {
-      min-width:100%;
-      width:100%;
-      max-width:100%;
-    }
+			min-width: 100%;
+			width: 100%;
+			max-width: 100%;
+		}
 		
 		.sb-board-region-title {
 			background-color: #87CBAC;
@@ -52,6 +73,7 @@ $( ".sb-resize" ).resizable();
 			border-right: 3px solid #2B644A;
 			transition: background-color 0.2s ease;
 			height: 100vh;
+			cursor: pointer;
 		}
 		
 		.sb-board-region:hover {
@@ -63,7 +85,7 @@ $( ".sb-resize" ).resizable();
 			min-width: 150px;
 			min-height: 600px;
 			height: 100vh;
-      transition: background-color 0.2s ease;
+			transition: background-color 0.2s ease;
 			border-right: 3px solid #2B644A;
 		}
 		
@@ -79,25 +101,85 @@ $( ".sb-resize" ).resizable();
 			-webkit-font-smoothing: antialiased;
 		}
 		
+		.sb-option {
+			display: inline-block;
+			padding: 10px;
+			margin-right: 10px;
+			margin-bottom: 10px;
+			border-radius: 10%;
+			min-width:60px;
+			min-height:60px;
+			text-align: center;
+			cursor: pointer;
+			transition: all 0.2s linear;
+			-webkit-font-smoothing: antialiased;
+		}
+		
+		.sb-option-default {
+			background-color: #75B9BE;
+		}
+		
+		.sb-option-default:hover {
+			background-color: #ACD5D8;
+			color: #464646;
+			transform: scale(1.2);
+		}
+		
 		.sb-button:hover {
 			text-decoration: none;
 			transform: scale(1.4);
 		}
 	</style>
 	<!--Main content-->
-	<div class="container-fixed sb-container">
+	<div class="container-fluid sb-container">
 		<!--Welcome Row-->
 		<div class="row">
-			<div class="col-xs-9">
+			<div class="col-xs-12">
 				<h1>Welcome to <strong>Scrumboard</strong></h1>
-			</div>
-			<div class="col-xs-3 text-right">
-				<a href="#" data-toggle="modal" data-target="#modalTask" class="sb-button text-info">
-					<h1>Add Task <i class="fa fa-plus-circle" aria-hidden="true"></i></h3>
-				</a>
 			</div>
 		</div>
 		<!--//Row: Welcome-->
+		<!--Toolbar row-->
+		<div class="row">
+			<div class="col-xs-12">
+				<!--Add button-->
+				<div id="btnNewTask" class="sb-option sb-option-default">
+					<i class="fa fa-3x fa-plus-circle" aria-hidden="true"></i>
+				</div>
+				<!--//Button: undo-->
+				<!--Undo button-->
+				<div id="btnUndo" class="sb-option sb-option-default">
+					<i class="fa fa-3x fa-undo" aria-hidden="true"></i>
+				</div>
+				<!--//Button: undo-->
+				<!--Redo button-->
+				<div id="btnRedo" class="sb-option sb-option-default">
+					<i class="fa fa-3x fa-repeat" aria-hidden="true"></i>
+				</div>
+				<!--//Button: redo-->
+				<!--Share board button-->
+				<div id="btnShare" class="sb-option sb-option-default">
+					<i class="fa fa-3x fa-share-alt" aria-hidden="true"></i>
+				</div>
+				<!--//Button: share-->
+				<!--Chat button-->
+				<div id="btnChat" class="sb-option sb-option-default">
+					<i class="fa fa-3x fa-comment" aria-hidden="true"></i>
+				</div>
+				<!--//Button: chat-->
+				<!--Delete board button-->
+				<div id="btnDelete" class="sb-option sb-option-default">
+					<i class="fa fa-3x fa-trash" aria-hidden="true"></i>
+				</div>
+				<!--//Button: redo-->
+				<!--Settings button-->
+				<div id="btnSettings" class="sb-option sb-option-default">
+					<i class="fa fa-3x fa-cog" aria-hidden="true"></i>
+				</div>
+				<!--//Button: settings-->
+			</div>
+		</div>
+		<!--//Row: Toolbar-->
 		<!--Scrumboard row-->
 		<div class="row">
 			<div class="sb-board-container">
@@ -127,26 +209,6 @@ $( ".sb-resize" ).resizable();
 	<!--//Row:Scrumboard-->
 	</div>
 	<!--//End Main-->
-
-	<div id="modalTask" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">New Sticky Note</h4>
-				</div>
-				<div class="modal-body">
-					<h3 style="margin-top:0px">Enter your new Task</h3>
-					<textarea maxlength="1000" placeholder="e.g. Order more bananas!" class="form-control input-lg"></textarea>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-
-		</div>
-	</div>
 </body>
 
 </html>
