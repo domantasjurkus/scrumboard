@@ -7,7 +7,7 @@ app.get('/client.js', function(req, res){
 });
 
 app.get('/', function(req, res){
-	res.sendFile('/viewtests/testboard1.html', { root: __dirname });
+	res.sendFile('/views/testboard1.html', { root: __dirname });
 });
 
 var id = 0;
@@ -33,6 +33,6 @@ io.on('connection', function(socket) {
 	});
 });
 
-http.listen(3000, function(){
+http.listen(3000, function() {
 	console.log('Listening on *:3000');
 });
