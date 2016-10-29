@@ -4,7 +4,7 @@ $(function () {
 		var e = $(msg.element);
 		e.attr('id', msg.id);
 		e.draggable({
-			snap: '#board',
+			snap: '#board,.sb-task-note',
 			containment: "parent",
 			drag: function (event, ui) {
 				socket.emit('drag-stop', {
