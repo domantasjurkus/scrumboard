@@ -6,6 +6,10 @@ app.get('/client.js', function(req, res){
 	res.sendFile('client.js', { root: __dirname });
 });
 
+app.get('/socket.io.js', function(req, res){
+	res.sendFile('socket.io.js', { root: __dirname });
+});
+
 app.get('/', function(req, res){
 	res.sendFile('index.html', { root: __dirname });
 });
