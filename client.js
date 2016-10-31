@@ -34,6 +34,10 @@ $(function () {
         $("#" + msg.id).css(msg.position);
     });
 
+    socket.on('deleteBoard', function() {
+        $('#board > .sb-task-note').remove();
+    });
+
     //socket.on('drag-stop', function (msg) {
         //$("#" + msg.id).css({ left: msg.left, top: msg.top });
     //});
@@ -46,6 +50,9 @@ $(function () {
     $('#btnNewTask').on("click", function () {
         //$('#svgBox').parent().click() //Fire the click event of box
 	$('#testNote').click();
-    })
+    });
+    $('#btnDelete').on("click", function() {
+        socket.emit('deleteBoard');
+    });
 
 });

@@ -57,6 +57,11 @@ io.on('connection', function(socket) {
         //console.log('drag-stop: ' + msg.id + " to " + msg.top + " " + msg.left);
         //socket.broadcast.emit('drag-stop', msg);
     //});
+
+    socket.on('deleteBoard', function() {
+        storage.setItemSync(room, {});
+        io.sockets.in(room).emit('deleteBoard');
+    });
 });
 
 http.listen(3000, function() {
