@@ -1,4 +1,5 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var shortid = require('shortid');
@@ -9,15 +10,11 @@ global.setImmediate = global.setImmediate || process.nextTick.bind(process);
 storage.initSync();
 storage.clearSync(); // to clear all storage, just for testing
 
-app.get('/client.js', function(req, res){
-    res.sendFile('client.js', { root: __dirname });
-});
-
+app.use(express.static('public'));
 app.get('/', function(req, res) {
     //redirect to a random room
     res.redirect(shortid.generate());
 });
-
 app.get('*', function(req, res){
     res.sendFile('/views/testboard1.html', { root: __dirname });
 });
@@ -54,10 +51,15 @@ io.on('connection', function(socket) {
         }
     });
 
-    //socket.on('drag-stop', function(msg) {
-        //console.log('drag-stop: ' + msg.id + " to " + msg.top + " " + msg.left);
-        //socket.broadcast.emit('drag-stop', msg);
-    //});
+    socket.on('edit', function(msg) {
+        //console.log('edit: ' + msg.id + ' changed to ' + msg.text);
+        var notes = storage.getItemSync(room) || {};
+        if (msg.id in notes) {
+            notes[msg.id].text = msg.text;
+            socket.broadcast.in(room).emit('edit', msg);
+            storage.setItemSync(room, notes);
+        }
+    });
 
     socket.on('deleteBoard', function() {
         storage.setItemSync(room, {});

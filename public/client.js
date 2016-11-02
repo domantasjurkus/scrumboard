@@ -7,7 +7,7 @@ $(function () {
     });
 
     socket.on('create', function (msg) {
-        var e = $(msg.element);
+        var e = $('<div class="sb-task-note"><h3 style="margin: 0px;"></h3></div>');
         e.attr('id', msg.id);
         e.draggable({
             snap: '#board,.sb-task-note',
@@ -18,10 +18,13 @@ $(function () {
                     position: ui.position
                 });
             },
-            //stop: function (event, ui) {
-                //socket.emit('drag-stop', { id: event.target.id, left: ui.position.left, top: ui.position.top });
-            //}
         });
+        e.find("h3").text(msg.text);
+        e.find("h3").editable({type: "textarea", action: ""},
+                              function(e) {
+                                  socket.emit('edit', {id: msg.id,
+                                                       text: e.value});
+                              });
         e.css(msg.position);
         $("#board").append(e);
     });
@@ -31,23 +34,17 @@ $(function () {
         $("#" + msg.id).css(msg.position);
     });
 
+    socket.on('edit', function(msg) {
+        $("#" + msg.id + " > h3").text(msg.text);
+    });
+
     socket.on('deleteBoard', function() {
         $('#board > .sb-task-note').remove();
     });
 
-    //socket.on('drag-stop', function (msg) {
-        //$("#" + msg.id).css({ left: msg.left, top: msg.top });
-    //});
-    $("#templates").children("svg").wrap("<span>");
-    $("#templates, #templates2")
-        .children()
-        .click(function () {
-            socket.emit('create', {element: $(this).html(),
-                                   position: {top: 0, left: 0}});
-        });
     $('#btnNewTask').on("click", function () {
-        //$('#svgBox').parent().click() //Fire the click event of box
-	$('#testNote').click();
+        socket.emit('create', {text: 'Your New Task!',
+                               position: {top: 0, left: 0}});
     });
     $('#btnDelete').on("click", function() {
         socket.emit('deleteBoard');
