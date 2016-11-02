@@ -22,11 +22,8 @@ $(function () {
                 //socket.emit('drag-stop', { id: event.target.id, left: ui.position.left, top: ui.position.top });
             //}
         });
+        e.css(msg.position);
         $("#board").append(e);
-        if (msg.hasOwnProperty("position"))
-            e.css(msg.position);
-        else
-            socket.emit('dragging', {id: msg.id, position: e.position()});
     });
 
     // Update dragged notes
@@ -45,7 +42,8 @@ $(function () {
     $("#templates, #templates2")
         .children()
         .click(function () {
-            socket.emit('create', $(this).html());
+            socket.emit('create', {element: $(this).html(),
+                                   position: {top: 0, left: 0}});
         });
     $('#btnNewTask').on("click", function () {
         //$('#svgBox').parent().click() //Fire the click event of box

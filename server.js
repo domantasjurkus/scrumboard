@@ -37,7 +37,8 @@ io.on('connection', function(socket) {
         var notes = storage.getItemSync(room) || {};
         var idTag = "m-" + Object.keys(notes).length;
         //console.log('create: ' + msg + "; assigning id " + idTag);
-        notes[idTag] = {id: idTag, element: msg};
+        notes[idTag] = msg;
+        notes[idTag].id = idTag;
         io.sockets.in(room).emit('create', notes[idTag]);
         storage.setItemSync(room, notes);
     });
