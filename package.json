@@ -4,6 +4,8 @@
   "description": "my first socket.io app",
   "dependencies": {
     "express": "^4.10.2",
-    "socket.io": "^1.5.0"
+    "socket.io": "^1.5.0",
+    "shortid": "~2.2.6",
+    "node-persist": "~2.0.7"
   }
 }
