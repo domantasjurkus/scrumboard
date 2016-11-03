@@ -51,6 +51,15 @@ io.on('connection', function(socket) {
         }
     });
 
+    socket.on('resizing', function(msg) {
+        var notes = storage.getItemSync(room) || {};
+        if (msg.id in notes) {
+            notes[msg.id].size = msg.size;
+            socket.broadcast.in(room).emit('resizing', msg);
+            storage.setItemSync(room, notes);
+        }
+    });
+
     socket.on('edit', function(msg) {
         //console.log('edit: ' + msg.id + ' changed to ' + msg.text);
         var notes = storage.getItemSync(room) || {};

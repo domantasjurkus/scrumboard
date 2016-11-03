@@ -9,9 +9,18 @@ $(function () {
     socket.on('create', function (msg) {
         var e = $('<div class="sb-task-note"><h3 style="margin: 0px;"></h3></div>');
         e.attr('id', msg.id);
+        e.resizable({
+            containment: "parent",
+            resize: function (event, ui) {
+                socket.emit('resizing', {id: event.target.id, size: ui.size});
+            }
+        });
         e.draggable({
             snap: '#board,.sb-task-note',
             containment: "parent",
+            start: function(event, ui) {
+                $(this).addClass('noclick');
+            },
             drag: function (event, ui) {
                 socket.emit('dragging', {
                     id: event.target.id,
@@ -20,18 +29,24 @@ $(function () {
             },
         });
         e.find("h3").text(msg.text);
-        e.find("h3").editable({type: "textarea", action: ""},
+        e.find("h3").editable({type: "textarea", action: "click"},
                               function(e) {
                                   socket.emit('edit', {id: msg.id,
                                                        text: e.value});
                               });
         e.css(msg.position);
+        if (msg.hasOwnProperty('size'))
+            e.css(msg.size);
         $("#board").append(e);
     });
 
     // Update dragged notes
     socket.on('dragging', function (msg) {
         $("#" + msg.id).css(msg.position);
+    });
+
+    socket.on('resizing', function(msg) {
+        $("#" + msg.id).css(msg.size);
     });
 
     socket.on('edit', function(msg) {
