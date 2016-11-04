@@ -9,9 +9,8 @@ $(function () {
     socket.on('create', function (msg) {
         var e = $('<div class="sb-task-note"><div class="sb-delete"><i class="fa fa-2x fa-times" aria-hidden="true"></i></div><h3 style="margin: 8px;"></h3></div>');
         e.children('.sb-delete').on("click",function(){
-            //Replace with delete logic - JB
-            alert("Delete clicked")
-        })
+            socket.emit('delete', msg.id);
+        });
         e.attr('id', msg.id);
         e.resizable({
             containment: "parent",
@@ -63,6 +62,10 @@ $(function () {
 
     socket.on('edit', function(msg) {
         $("#" + msg.id + " > h3").text(msg.text);
+    });
+    
+    socket.on('delete', function(msg) {
+        $("#" + msg).remove();
     });
 
     socket.on('deleteBoard', function() {
