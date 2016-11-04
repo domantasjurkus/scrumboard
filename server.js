@@ -4,19 +4,21 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var shortid = require('shortid');
 var storage = require('node-persist');
+var path = require('path');
 
 // a necessary hack
 global.setImmediate = global.setImmediate || process.nextTick.bind(process);
 storage.initSync();
 storage.clearSync(); // to clear all storage, just for testing
 
-app.use(express.static('public'));
+app.use('/', express.static(path.join(__dirname + '/public')));
+// app.use('/static', express.static(__dirname + '/public'));
 app.get('/', function(req, res) {
     //redirect to a random room
     res.redirect(shortid.generate());
 });
 app.get('*', function(req, res){
-    res.sendFile('/views/testboard1.html', { root: __dirname });
+    res.sendFile('/public/index.html', { root: __dirname });
 });
 
 io.on('connection', function(socket) {

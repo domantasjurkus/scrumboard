@@ -11,8 +11,9 @@
 	<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
 		crossorigin="anonymous"></script>
 	<script src="/socket.io/socket.io.js"></script>
-        <script src="jquery.editable.js"></script>
-	<script src="client.js"></script>
+        <script src="js/jquery.editable.js"></script>
+	<script src="js/client.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
@@ -33,118 +34,6 @@ $( ".sb-resize" ).resizable();
 	});
   
   </script>
-	<style>
-		html,
-		body {
-			height: 100vh;
-		}
-		
-		.popover {
-			border: 0px;
-		}
-		
-		.sb-container {
-			min-width: 400px;
-		}
-		
-		.sb-board-container {
-			min-width: 100%;
-			width: 100%;
-			max-width: 100%;
-		}
-		
-		.sb-board-region-title {
-			background-color: #74B9BE;
-			text-align: center;
-		}
-		
-		.sb-board-region-title-alt {
-			background-color: #74B9BE;
-			text-align: center;
-		}
-		
-		.sb-board-region {
-			background-color: #F1F8F8;
-			min-width: 150px;
-			min-height: 600px;
-			border-right: 2px solid #74B9BE;
-			transition: background-color 0.2s ease;
-			height: 100vh;
-			cursor: pointer;
-		}
-		
-		.sb-board-region:hover {
-			background-color: #D4EDE2;
-		}
-		
-		.sb-board-region-alt {
-			background-color: #F1F8F8;
-			min-width: 150px;
-			min-height: 600px;
-			height: 100vh;
-			transition: background-color 0.2s ease;
-			border-right: 2px solid #74B9BE;
-		}
-		
-		.sb-board-region-alt:hover {
-			background-color: #D4EDE2;
-		}
-		
-		.sb-board-area {
-			height: 100%;
-		}
-		
-		.sb-task-note {
-			width: 100px;
-			height: 100px;
-			min-width: 100px;
-			min-height: 100px;
-			padding: 10px;
-			margin: 5px;
-			text-align:center;
-			vertical-align:center;
-			background-color: #CECECE;
-			color: #474343;
-			box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-		}
-		
-		.sb-button {
-			text-decoration: none;
-			cursor: pointer;
-			transition: all 0.3s linear;
-			/*Fix crappy Chrome scaling blur issues*/
-			-webkit-font-smoothing: antialiased;
-		}
-		
-		.sb-option {
-			display: inline-block;
-			padding: 10px;
-			margin-right: 10px;
-			margin-bottom: 10px;
-			border-radius: 10%;
-			min-width: 60px;
-			min-height: 60px;
-			text-align: center;
-			cursor: pointer;
-			transition: all 0.2s linear;
-			-webkit-font-smoothing: antialiased;
-		}
-		
-		.sb-option-default {
-			background-color: #75B9BE;
-		}
-		
-		.sb-option-default:hover {
-			background-color: #ACD5D8;
-			color: #464646;
-			transform: scale(1.2);
-		}
-		
-		.sb-button:hover {
-			text-decoration: none;
-			transform: scale(1.4);
-		}
-	</style>
 	<!--Main content-->
 	<div class="container-fluid sb-container">
 		<!--Welcome Row-->
