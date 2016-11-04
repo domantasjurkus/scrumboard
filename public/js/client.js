@@ -22,6 +22,7 @@ $(function () {
         e.draggable({
             snap: '.sb-resize,.sb-task-note',
             containment: "#board",
+            snapTolerance: 25,
             start: function(event, ui) {
                 $(this).addClass('noclick');
                 socket.emit('drag-start', {id: event.target.id,
@@ -42,9 +43,6 @@ $(function () {
                               });
         e.css(msg.position);
 
-        if (msg.hasOwnProperty('size'))
-            e.css('height','30px');
-        
         $("#backlog").append(e);
     });
 
@@ -62,7 +60,7 @@ $(function () {
     });
 
     socket.on('deleteBoard', function() {
-        $('#board > .sb-task-note').remove();
+        $('#backlog > .sb-task-note').remove();
     });
 
     $('#btnNewTask').on("click", function () {
