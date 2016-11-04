@@ -47,7 +47,7 @@ $(function () {
         e.css(msg.position);
 
         if (msg.hasOwnProperty('size'))
-            e.css('height','30px');
+            e.css(msg.size);
         
         $("#backlog").append(e);
     });
@@ -66,7 +66,7 @@ $(function () {
     });
 
     socket.on('deleteBoard', function() {
-        $('#board > .sb-task-note').remove();
+        $('.sb-task-note').remove();
     });
 
     $('#btnNewTask').on("click", function () {
