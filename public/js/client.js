@@ -25,6 +25,7 @@ $(function () {
         e.draggable({
             snap: '.sb-resize,.sb-task-note',
             containment: "#board",
+            snapTolerance: 25,
             start: function(event, ui) {
                 $(this).addClass('noclick');
                 socket.emit('drag-start', {id: event.target.id,
