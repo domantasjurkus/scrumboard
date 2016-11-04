@@ -118,7 +118,7 @@ body {
 		position:absolute;
 		top:2px;
 		right:2px;
-		color:#d63453;
+		color:#747879;
 		transition:all 0.1s linear;
 	}
 	.sb-task-note:hover .sb-delete{
