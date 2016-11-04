@@ -23,7 +23,9 @@ app.get('*', function(req, res){
 });
 
 function getState(room) {
-    return storage.getItemSync(room) || {notes: {}, undo: [], redo: []};
+    var emptyState = {notes: {}, undo: [], redo: []};
+    emptyState.nextId = 0;
+    return storage.getItemSync(room) || emptyState;
 }
 
 function clone(obj) {
@@ -60,9 +62,9 @@ io.on('connection', function(socket) {
 
     socket.on('create', function(msg) {
         var state = getState(room);
-        var idTag = "m-" + Object.keys(state.notes).length;
         //console.log('create: ' + msg + "; assigning id " + idTag);
         registerUndo(state);
+        var idTag = "m-" + state.nextId++;
         state.notes[idTag] = msg;
         state.notes[idTag].id = idTag;
         io.sockets.in(room).emit('create', state.notes[idTag]);
