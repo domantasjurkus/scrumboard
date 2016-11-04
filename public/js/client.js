@@ -20,8 +20,8 @@ $(function () {
             }
         });
         e.draggable({
-            snap: '#board,.sb-task-note',
-            containment: "parent",
+            snap: '.sb-resize,.sb-task-note',
+            containment: "#board",
             start: function(event, ui) {
                 $(this).addClass('noclick');
                 socket.emit('drag-start', {id: event.target.id,
@@ -41,9 +41,11 @@ $(function () {
                                                        text: e.value});
                               });
         e.css(msg.position);
+
         if (msg.hasOwnProperty('size'))
-            e.css(msg.size);
-        $("#board").append(e);
+            e.css('height','30px');
+        
+        $("#backlog").append(e);
     });
 
     // Update dragged notes

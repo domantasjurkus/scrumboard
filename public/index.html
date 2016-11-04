@@ -11,9 +11,9 @@
 	<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
 		crossorigin="anonymous"></script>
 	<script src="/socket.io/socket.io.js"></script>
-        <script src="js/jquery.editable.js"></script>
-	<script src="js/client.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+        <script src="static/js/jquery.editable.js"></script>
+	<script src="static/js/client.js"></script>
+	<link rel="stylesheet" type="text/css" href="static/css/style.css">
 </head>
 
 <body>
@@ -86,29 +86,34 @@ $( ".sb-resize" ).resizable();
 		<!--//Row: Toolbar-->
 		<!--Scrumboard row-->
 		<div class="row">
-			<div class="sb-board-container">
-				<div class="col-xs-3 sb-resize sb-board-region">
-					<div class="row sb-board-region-title">
-						<h2 style="margin-top:10px">Backlog</h2>
+			<div class="sb-board-container"  >
+				<div class="col-md-12" id="board">
+					<div class="col-xs-3 sb-resize sb-board-region" >
+						<div class="row sb-board-region-title">
+							<h2 style="margin-top:10px">Backlog</h2>
+						</div>
+						<div class="row sb-board-area" id="backlog"></div>
 					</div>
-					<div class="row sb-board-area" id="board">
+					<div class="col-xs-3 sb-resize  sb-board-region-alt">
+						<div class="row sb-board-region-title-alt">
+							<h2 style="margin-top:10px">To do</h2>
+						</div>
+						<div class="row sb-board-area" "></div>
+					</div>
+					<div class="col-xs-3 sb-resize sb-board-region">
+						<div class="row sb-board-region-title">
+							<h2 style="margin-top:10px">In Progress</h2>
+						</div>
+						<div class="row sb-board-area" ></div>
+					</div>
+					<div class="col-xs-3 sb-resize sb-board-region-alt">
+						<div class="row sb-board-region-title-alt">
+							<h2 style="margin-top:10px">Done</h2>
+						</div>
+						<div class="row sb-board-area" ></div>
 					</div>
 				</div>
-				<div class="col-xs-3 sb-resize  sb-board-region-alt">
-					<div class="row sb-board-region-title-alt">
-						<h2 style="margin-top:10px">To do</h2>
-					</div>
-				</div>
-				<div class="col-xs-3 sb-resize sb-board-region">
-					<div class="row sb-board-region-title">
-						<h2 style="margin-top:10px">In Progress</h2>
-					</div>
-				</div>
-				<div class="col-xs-3 sb-resize sb-board-region-alt">
-					<div class="row sb-board-region-title-alt">
-						<h2 style="margin-top:10px">Done</h2>
-					</div>
-				</div>
+				
 			</div>
 		</div>
 	</div>
