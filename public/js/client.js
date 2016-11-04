@@ -14,7 +14,7 @@ $(function () {
         })
         e.attr('id', msg.id);
         e.resizable({
-            containment: "parent",
+            containment: "#board",
             resize: function (event, ui) {
                 socket.emit('resizing', {id: event.target.id, size: ui.size});
             },
