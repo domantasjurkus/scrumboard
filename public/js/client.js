@@ -7,7 +7,11 @@ $(function () {
     });
 
     socket.on('create', function (msg) {
-        var e = $('<div class="sb-task-note"><h3 style="margin: 0px;"></h3></div>');
+        var e = $('<div class="sb-task-note"><div class="sb-delete"><i class="fa fa-2x fa-times" aria-hidden="true"></i></div><h3 style="margin: 8px;"></h3></div>');
+        e.children('.sb-delete').on("click",function(){
+            //Replace with delete logic - JB
+            alert("Delete clicked")
+        })
         e.attr('id', msg.id);
         e.resizable({
             containment: "parent",
@@ -43,6 +47,9 @@ $(function () {
                               });
         e.css(msg.position);
 
+        if (msg.hasOwnProperty('size'))
+            e.css(msg.size);
+        
         $("#backlog").append(e);
     });
 
@@ -60,7 +67,7 @@ $(function () {
     });
 
     socket.on('deleteBoard', function() {
-        $('#backlog > .sb-task-note').remove();
+        $('.sb-task-note').remove();
     });
 
     $('#btnNewTask').on("click", function () {
