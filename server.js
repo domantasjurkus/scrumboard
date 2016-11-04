@@ -19,60 +19,134 @@ app.get('*', function(req, res){
     res.sendFile('/views/testboard1.html', { root: __dirname });
 });
 
+function getState(room) {
+    return storage.getItemSync(room) || {notes: {}, undo: [], redo: []};
+}
+
+function clone(obj) {
+    if (obj == null || typeof obj != "object")
+        return obj;
+    var copy = obj.constructor();
+    for (var attr in obj)
+        if (obj.hasOwnProperty(attr))
+            copy[attr] = clone(obj[attr]);
+    return copy;
+}
+
+function registerUndo(state) {
+    state.redo = [];
+    state.undo.push(clone(state.notes));
+}
+
 io.on('connection', function(socket) {
     var room = "";
+
+    // recreate the whole board, can be sent to one or multiple clients
+    function createState(notes, room) {
+        io.sockets.to(room).emit('deleteBoard');
+        for (var id in notes) {
+            io.sockets.to(room).emit('create', notes[id]);
+        }
+    }
+
     socket.on('room', function(r) {
         room = r;
         socket.join(r);
-        var notes = storage.getItemSync(room) || {};
-        for (var noteId in notes) {
-            // recreate notes from storage
-            io.sockets.to(socket.id).emit('create', notes[noteId]);
-        }
+        createState(getState(room).notes, socket.id);
     });
+
     socket.on('create', function(msg) {
-        var notes = storage.getItemSync(room) || {};
-        var idTag = "m-" + Object.keys(notes).length;
+        var state = getState(room);
+        var idTag = "m-" + Object.keys(state.notes).length;
         //console.log('create: ' + msg + "; assigning id " + idTag);
-        notes[idTag] = msg;
-        notes[idTag].id = idTag;
-        io.sockets.in(room).emit('create', notes[idTag]);
-        storage.setItemSync(room, notes);
+        registerUndo(state);
+        state.notes[idTag] = msg;
+        state.notes[idTag].id = idTag;
+        io.sockets.in(room).emit('create', state.notes[idTag]);
+        storage.setItemSync(room, state);
     });
 
     // Broadcast note movement
     socket.on('dragging', function(msg) {
         //console.log('dragging: ' + msg.id + " to " + msg.position.top + " " + msg.position.left);
-        var notes = storage.getItemSync(room) || {};
-        if (msg.id in notes) {
-            notes[msg.id].position = msg.position;
+        var state = getState(room);
+        if (msg.id in state.notes) {
+            // note: no registerUndo, we do it at the drag-start event
+            state.notes[msg.id].position = msg.position;
             socket.broadcast.in(room).emit('dragging', msg);
-            storage.setItemSync(room, notes);
+            storage.setItemSync(room, state);
         }
     });
 
+     socket.on('drag-start', function(msg) {
+        var state = getState(room);
+        var previousState = clone(state.notes);
+        if (msg.id in previousState) {
+            state.redo = [];
+            previousState[msg.id].position = msg.position;
+            state.undo.push(previousState);
+            storage.setItemSync(room, state);
+        }
+    });
+   
     socket.on('resizing', function(msg) {
-        var notes = storage.getItemSync(room) || {};
-        if (msg.id in notes) {
-            notes[msg.id].size = msg.size;
+        var state = getState(room);
+        if (msg.id in state.notes) {
+            // note: no registerUndo, we do it at the resize-start event
+            state.notes[msg.id].size = msg.size;
             socket.broadcast.in(room).emit('resizing', msg);
-            storage.setItemSync(room, notes);
+            storage.setItemSync(room, state);
+        }
+    });
+    
+    socket.on('resize-start', function(msg) {
+        var state = getState(room);
+        var previousState = clone(state.notes);
+        if (msg.id in previousState) {
+            state.redo = [];
+            previousState[msg.id].size = msg.size;
+            state.undo.push(previousState);
+            storage.setItemSync(room, state);
         }
     });
 
     socket.on('edit', function(msg) {
         //console.log('edit: ' + msg.id + ' changed to ' + msg.text);
-        var notes = storage.getItemSync(room) || {};
-        if (msg.id in notes) {
-            notes[msg.id].text = msg.text;
+        var state = getState(room);
+        if (msg.id in state.notes) {
+            registerUndo(state);
+            state.notes[msg.id].text = msg.text;
             socket.broadcast.in(room).emit('edit', msg);
-            storage.setItemSync(room, notes);
+            storage.setItemSync(room, state);
+        }
+    });
+    
+    socket.on('undo', function() {
+        var state = getState(room);
+        if (state.undo.length > 0) {
+            state.redo.push(clone(state.notes));
+            state.notes = state.undo.pop();
+            createState(state.notes, room);
+            storage.setItemSync(room, state);
+        }
+    });
+    
+    socket.on('redo', function() {
+        var state = getState(room);
+        if (state.redo.length > 0) {
+            state.undo.push(clone(state.notes));
+            state.notes = state.redo.pop();
+            createState(state.notes, room);
+            storage.setItemSync(room, state);
         }
     });
 
     socket.on('deleteBoard', function() {
-        storage.setItemSync(room, {});
+        var state = getState(room);
+        registerUndo(state);
+        state.notes = {};
         io.sockets.in(room).emit('deleteBoard');
+        storage.setItemSync(room, state);
     });
 });
 

@@ -13,6 +13,10 @@ $(function () {
             containment: "parent",
             resize: function (event, ui) {
                 socket.emit('resizing', {id: event.target.id, size: ui.size});
+            },
+            start: function(event, ui) {
+                socket.emit('resize-start', {id: event.target.id,
+                                             size: ui.originalSize});
             }
         });
         e.draggable({
@@ -20,13 +24,15 @@ $(function () {
             containment: "parent",
             start: function(event, ui) {
                 $(this).addClass('noclick');
+                socket.emit('drag-start', {id: event.target.id,
+                                           position: ui.originalPosition});
             },
             drag: function (event, ui) {
                 socket.emit('dragging', {
                     id: event.target.id,
                     position: ui.position
                 });
-            },
+            }
         });
         e.find("h3").text(msg.text);
         e.find("h3").editable({type: "textarea", action: "click"},
@@ -60,6 +66,12 @@ $(function () {
     $('#btnNewTask').on("click", function () {
         socket.emit('create', {text: 'Your New Task!',
                                position: {top: 0, left: 0}});
+    });
+    $('#btnUndo').on("click", function() {
+        socket.emit('undo');
+    });
+    $('#btnRedo').on("click", function() {
+        socket.emit('redo');
     });
     $('#btnDelete').on("click", function() {
         socket.emit('deleteBoard');
