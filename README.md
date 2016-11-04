@@ -1,4 +1,4 @@
-###Scrum Board
+###ScrumBoard
 An Interactive board for Agile task management.
 
 We probably need a todo list of possible things to implement in this here applicaion.
@@ -11,13 +11,15 @@ Not currently on order of priority (do this later)
 
 ###Known Bug List
 1. Add a new note and move it to a different column than “Backlog”. Put cursor off note then back on again. Notice how the “Backlog” column suddenly lightens up as if the user’s cursor is in it?
+2. You can resize a note larger than one of the columns - should probably deal with this in some way.
+3. Scrolling down reveals the white horizontal line across the bottom.
+4. Snapping on the top is to the top of the header line rather than top of note area.
+5. Snapping on right column wall looks slightly different than snapping on the left column wall.
 
 ###Suggested Feature List
 
-Notes across boards
-
-Delete a sticky note
 Move sticky note to top of stack (as a brief explanation)
+
 Sticky note colours - alter colour of sticky notes
 Chat functionality - style of Facebook corner chat / moveable Twitch popout chat window
 
