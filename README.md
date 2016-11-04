@@ -9,6 +9,9 @@ These are suggestions and by no means a list of things it has to do.
 
 Not currently on order of priority (do this later)
 
+###Known Bug List
+1. Add a new note and move it to a different column than “Backlog”. Put cursor off note then back on again. Notice how the “Backlog” column suddenly lightens up as if the user’s cursor is in it?
+
 ###Suggested Feature List
 
 Notes across boards
