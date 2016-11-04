@@ -110,3 +110,20 @@ body {
 	text-decoration: none;
 	transform: scale(1.4);
 }
+.sb-delete{
+		cursor:pointer;
+		display:none;
+		text-align: right;
+		vertical-align:top;
+		position:absolute;
+		top:2px;
+		right:2px;
+		color:#d63453;
+		transition:all 0.1s linear;
+	}
+	.sb-task-note:hover .sb-delete{
+		display:block;
+	}
+	.sb-delete:hover{
+		color:#ffffff;
+	}
