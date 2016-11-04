@@ -124,6 +124,15 @@ io.on('connection', function(socket) {
         }
     });
     
+    socket.on('delete', function(msg) {
+        var state = getState(room);
+        if (msg in state.notes) {
+            registerUndo(state);
+            delete state.notes[msg];
+            io.sockets.in(room).emit('delete', msg);
+        }
+    });
+    
     socket.on('undo', function() {
         var state = getState(room);
         if (state.undo.length > 0) {
