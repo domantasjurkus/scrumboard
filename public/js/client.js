@@ -37,6 +37,9 @@ $(function () {
                     parent: $(this).parent().attr('id'),
                     position: ui.position
                 });
+            },
+            stop: function(event, ui) {
+                socket.emit('drag-stop', event.target.id);
             }
         });
         e.find("h3").text(msg.text);
@@ -74,6 +77,14 @@ $(function () {
 
     socket.on('deleteBoard', function() {
         $('.sb-task-note').remove();
+    });
+
+    socket.on('enable', function(msg) {
+        $('#' + msg).draggable('enable').resizable('enable');
+    });
+
+    socket.on('disable', function(msg) {
+        $('#' + msg).draggable('disable').resizable('disable');
     });
 
     $('#btnNewTask').on("click", function () {

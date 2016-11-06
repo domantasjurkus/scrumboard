@@ -29,8 +29,6 @@ Alter column colours - either user selects colour of have colour toggle (night t
 
 Highlight when a user selects a note (see when / which other notes a user currently working on)
 
-Don't allow two users to drag the same note.
-
 Resize text - both column headers and note text
 
 Make toolbar smaller / potentially compact on phones (look at http://material.io/resizer/#url=http%3A%2F%2Fscrumboard.info.tm) to see how site looks across different screen sizes. Would look good in report to say considered and accounted for this. 

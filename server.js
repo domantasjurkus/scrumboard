@@ -86,11 +86,16 @@ io.on('connection', function(socket) {
         var state = getState(room);
         var previousState = clone(state.notes);
         if (msg.id in previousState) {
+            socket.broadcast.in(room).emit('disable', msg.id);
             state.redo = [];
             previousState[msg.id].position = msg.position;
             state.undo.push(previousState);
             storage.setItemSync(room, state);
         }
+    });
+
+    socket.on('drag-stop', function(msg) {
+        socket.broadcast.in(room).emit('enable', msg);
     });
 
     socket.on('resizing', function(msg) {
