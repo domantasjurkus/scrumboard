@@ -13,7 +13,7 @@ $(function () {
         });
         e.attr('id', msg.id);
         e.resizable({
-            containment: "#board",
+            containment: 'parent',
             resize: function (event, ui) {
                 socket.emit('resizing', {id: event.target.id, size: ui.size});
             },

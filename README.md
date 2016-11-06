@@ -11,10 +11,9 @@ Not currently in order of priority (do this later)
 
 ###Known Bug List
 1. Add a new note and move it to a different column than “Backlog”. Put cursor off note then back on again. Notice how the “Backlog” column suddenly lightens up as if the user’s cursor is in it?
-2. You can resize a note larger than one of the columns - should probably deal with this in some way.
-3. Scrolling down reveals the white horizontal line across the bottom.
-4. Snapping on the top is to the top of the header line rather than top of note area.
-5. Snapping on right column wall looks slightly different than snapping on the left column wall.
+2. Scrolling down reveals the white horizontal line across the bottom.
+3. Snapping on the top is to the top of the header line rather than top of note area.
+4. Snapping on right column wall looks slightly different than snapping on the left column wall.
 
 ###Suggested Feature List
 
