@@ -12,13 +12,11 @@ storage.initSync();
 storage.clearSync(); // to clear all storage, just for testing
 
 app.use('/static', express.static(path.join(__dirname + '/public')));
-// app.use('/static', express.static(__dirname + '/public'));
 app.get('/', function(req, res) {
     //redirect to a random room
      res.redirect(shortid.generate());
 });
 app.get('*', function(req, res){
-   
     res.sendFile('/public/index.html', { root: __dirname });
 });
 
@@ -77,6 +75,7 @@ io.on('connection', function(socket) {
         var state = getState(room);
         if (msg.id in state.notes) {
             // note: no registerUndo, we do it at the drag-start event
+            state.notes[msg.id].parent = msg.parent;
             state.notes[msg.id].position = msg.position;
             socket.broadcast.in(room).emit('dragging', msg);
             storage.setItemSync(room, state);
@@ -93,7 +92,7 @@ io.on('connection', function(socket) {
             storage.setItemSync(room, state);
         }
     });
-   
+
     socket.on('resizing', function(msg) {
         var state = getState(room);
         if (msg.id in state.notes) {

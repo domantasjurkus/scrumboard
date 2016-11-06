@@ -34,6 +34,7 @@ $(function () {
             drag: function (event, ui) {
                 socket.emit('dragging', {
                     id: event.target.id,
+                    parent: $(this).parent().attr('id'),
                     position: ui.position
                 });
             }
@@ -49,12 +50,14 @@ $(function () {
         if (msg.hasOwnProperty('size'))
             e.css(msg.size);
         
-        $("#backlog").append(e);
+        $("#" + msg.parent).append(e);
     });
 
     // Update dragged notes
     socket.on('dragging', function (msg) {
-        $("#" + msg.id).css(msg.position);
+        var note = $("#" + msg.id);
+        $("#" + msg.parent).append(note);
+        note.css(msg.position);
     });
 
     socket.on('resizing', function(msg) {
@@ -75,7 +78,8 @@ $(function () {
 
     $('#btnNewTask').on("click", function () {
         socket.emit('create', {text: 'Your New Task!',
-                               position: {top: 0, left: 0}});
+                               position: {top: 0, left: 0},
+                               parent: 'backlog'});
     });
     $('#btnUndo').on("click", function() {
         socket.emit('undo');

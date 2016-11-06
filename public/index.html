@@ -18,10 +18,6 @@
 
 <body>
 	<script>
-    /*$(document).ready(function(){
-$( ".sb-resize" ).resizable();
-    })*/
-
 	//Activate bootstrap popovers and set up
 	$(document).ready(function(){
 		$('#btnNewTask').popover({content: "New Task", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});
@@ -31,6 +27,11 @@ $( ".sb-resize" ).resizable();
 		$('#btnSettings').popover({content: "Settings", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});  
 		$('#btnShare').popover({content: "Share", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true}); 
 		$('#btnChat').popover({content: "Chat", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});   
+		$('.sb-board-area').droppable({tolerance: "intersect", drop: function(event, ui) {
+		    var oldPosition = ui.draggable.offset();
+		    $(this).append(ui.draggable);
+		    ui.draggable.offset(oldPosition);
+		}});
 	});
   
   </script>
@@ -98,19 +99,19 @@ $( ".sb-resize" ).resizable();
 						<div class="row sb-board-region-title-alt">
 							<h2 style="margin-top:10px">To do</h2>
 						</div>
-						<div class="row sb-board-area" "></div>
+						<div class="row sb-board-area" id="todo"></div>
 					</div>
 					<div class="col-xs-3 sb-resize sb-board-region">
 						<div class="row sb-board-region-title">
 							<h2 style="margin-top:10px">In Progress</h2>
 						</div>
-						<div class="row sb-board-area" ></div>
+						<div class="row sb-board-area" id="inprogress"></div>
 					</div>
 					<div class="col-xs-3 sb-resize sb-board-region-alt">
 						<div class="row sb-board-region-title-alt">
 							<h2 style="margin-top:10px">Done</h2>
 						</div>
-						<div class="row sb-board-area" ></div>
+						<div class="row sb-board-area" id="done"></div>
 					</div>
 				</div>
 				
