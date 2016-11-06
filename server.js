@@ -21,7 +21,11 @@ app.get('*', function(req, res){
 });
 
 function getState(room) {
-    var emptyState = {notes: {}, undo: [], redo: []};
+    var emptyState = {state: {notes: {}, headers: {'header0': 'Backlog',
+                                                   'header1': 'To do',
+                                                   'header2': 'In Progress',
+                                                   'header3': 'Done'}},
+                      undo: [], redo: []};
     emptyState.nextId = 0;
     return storage.getItemSync(room) || emptyState;
 }
@@ -38,24 +42,27 @@ function clone(obj) {
 
 function registerUndo(state) {
     state.redo = [];
-    state.undo.push(clone(state.notes));
+    state.undo.push(clone(state.state));
 }
 
 io.on('connection', function(socket) {
     var room = "";
 
     // recreate the whole board, can be sent to one or multiple clients
-    function createState(notes, room) {
+    function createState(state, room) {
         io.sockets.to(room).emit('deleteBoard');
-        for (var id in notes) {
-            io.sockets.to(room).emit('create', notes[id]);
+        for (var id in state.notes)
+            io.sockets.to(room).emit('create', state.notes[id]);
+        for (var id in state.headers) {
+            io.sockets.to(room).emit('edit-header', {id: id,
+                                                     text: state.headers[id]});
         }
     }
 
     socket.on('room', function(r) {
         room = r;
         socket.join(r);
-        createState(getState(room).notes, socket.id);
+        createState(getState(room).state, socket.id);
     });
 
     socket.on('create', function(msg) {
@@ -63,9 +70,9 @@ io.on('connection', function(socket) {
         //console.log('create: ' + msg + "; assigning id " + idTag);
         registerUndo(state);
         var idTag = "m-" + state.nextId++;
-        state.notes[idTag] = msg;
-        state.notes[idTag].id = idTag;
-        io.sockets.in(room).emit('create', state.notes[idTag]);
+        state.state.notes[idTag] = msg;
+        state.state.notes[idTag].id = idTag;
+        io.sockets.in(room).emit('create', state.state.notes[idTag]);
         storage.setItemSync(room, state);
     });
 
@@ -73,10 +80,10 @@ io.on('connection', function(socket) {
     socket.on('dragging', function(msg) {
         //console.log('dragging: ' + msg.id + " to " + msg.position.top + " " + msg.position.left);
         var state = getState(room);
-        if (msg.id in state.notes) {
+        if (msg.id in state.state.notes) {
             // note: no registerUndo, we do it at the drag-start event
-            state.notes[msg.id].parent = msg.parent;
-            state.notes[msg.id].position = msg.position;
+            state.state.notes[msg.id].parent = msg.parent;
+            state.state.notes[msg.id].position = msg.position;
             socket.broadcast.in(room).emit('dragging', msg);
             storage.setItemSync(room, state);
         }
@@ -84,11 +91,11 @@ io.on('connection', function(socket) {
 
      socket.on('drag-start', function(msg) {
         var state = getState(room);
-        var previousState = clone(state.notes);
-        if (msg.id in previousState) {
+        var previousState = clone(state.state);
+        if (msg.id in previousState.notes) {
             socket.broadcast.in(room).emit('disable', msg.id);
             state.redo = [];
-            previousState[msg.id].position = msg.position;
+            previousState.notes[msg.id].position = msg.position;
             state.undo.push(previousState);
             storage.setItemSync(room, state);
         }
@@ -100,9 +107,9 @@ io.on('connection', function(socket) {
 
     socket.on('resizing', function(msg) {
         var state = getState(room);
-        if (msg.id in state.notes) {
+        if (msg.id in state.state.notes) {
             // note: no registerUndo, we do it at the resize-start event
-            state.notes[msg.id].size = msg.size;
+            state.state.notes[msg.id].size = msg.size;
             socket.broadcast.in(room).emit('resizing', msg);
             storage.setItemSync(room, state);
         }
@@ -110,10 +117,10 @@ io.on('connection', function(socket) {
     
     socket.on('resize-start', function(msg) {
         var state = getState(room);
-        var previousState = clone(state.notes);
+        var previousState = clone(state.state);
         if (msg.id in previousState) {
             state.redo = [];
-            previousState[msg.id].size = msg.size;
+            previousState.notes[msg.id].size = msg.size;
             state.undo.push(previousState);
             storage.setItemSync(room, state);
         }
@@ -122,19 +129,28 @@ io.on('connection', function(socket) {
     socket.on('edit', function(msg) {
         //console.log('edit: ' + msg.id + ' changed to ' + msg.text);
         var state = getState(room);
-        if (msg.id in state.notes) {
+        if (msg.id in state.state.notes) {
             registerUndo(state);
-            state.notes[msg.id].text = msg.text;
+            state.state.notes[msg.id].text = msg.text;
             socket.broadcast.in(room).emit('edit', msg);
             storage.setItemSync(room, state);
         }
     });
+
+    socket.on('edit-header', function(msg) {
+        //console.log('edit-header: ' + msg.id + ' changed to ' + msg.text);
+        var state = getState(room);
+        registerUndo(state);
+        state.state.headers[msg.id] = msg.text;
+        socket.broadcast.in(room).emit('edit-header', msg);
+        storage.setItemSync(room, state);
+    });
     
     socket.on('delete', function(msg) {
         var state = getState(room);
-        if (msg in state.notes) {
+        if (msg in state.state.notes) {
             registerUndo(state);
-            delete state.notes[msg];
+            delete state.state.notes[msg];
             io.sockets.in(room).emit('delete', msg);
         }
     });
@@ -142,9 +158,9 @@ io.on('connection', function(socket) {
     socket.on('undo', function() {
         var state = getState(room);
         if (state.undo.length > 0) {
-            state.redo.push(clone(state.notes));
-            state.notes = state.undo.pop();
-            createState(state.notes, room);
+            state.redo.push(clone(state.state));
+            state.state = state.undo.pop();
+            createState(state.state, room);
             storage.setItemSync(room, state);
         }
     });
@@ -152,9 +168,9 @@ io.on('connection', function(socket) {
     socket.on('redo', function() {
         var state = getState(room);
         if (state.redo.length > 0) {
-            state.undo.push(clone(state.notes));
-            state.notes = state.redo.pop();
-            createState(state.notes, room);
+            state.undo.push(clone(state.state));
+            state.state = state.redo.pop();
+            createState(state.state, room);
             storage.setItemSync(room, state);
         }
     });
@@ -162,7 +178,7 @@ io.on('connection', function(socket) {
     socket.on('deleteBoard', function() {
         var state = getState(room);
         registerUndo(state);
-        state.notes = {};
+        state.state.notes = {};
         io.sockets.in(room).emit('deleteBoard');
         storage.setItemSync(room, state);
     });

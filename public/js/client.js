@@ -4,6 +4,13 @@ $(function () {
     socket.on('connect', function() {
         // room is defined by the URL
         socket.emit('room', window.location.pathname);
+        // make headers editable
+        for (var i = 0; i < 4; i++) {
+            $('#header' + i).editable("click", function(e) {
+                socket.emit('edit-header', {id: e.target.attr('id'),
+                                            text: e.value});
+            });
+        }
     });
 
     socket.on('create', function (msg) {
@@ -42,11 +49,13 @@ $(function () {
                 socket.emit('drag-stop', event.target.id);
             }
         });
-        e.find("h3").text(msg.text);
+        e.find("h3").html(msg.text);
         e.find("h3").editable({type: "textarea", action: "click"},
                               function(e) {
-                                  socket.emit('edit', {id: msg.id,
-                                                       text: e.value});
+                                  socket.emit('edit', {
+                                      id: msg.id,
+                                      text: e.value.replace(/\n/g, '<br />')
+                                  });
                               });
         e.css(msg.position);
 
@@ -68,7 +77,7 @@ $(function () {
     });
 
     socket.on('edit', function(msg) {
-        $("#" + msg.id + " > h3").text(msg.text);
+        $("#" + msg.id + " > h3").html(msg.text);
     });
     
     socket.on('delete', function(msg) {
@@ -85,6 +94,10 @@ $(function () {
 
     socket.on('disable', function(msg) {
         $('#' + msg).draggable('disable').resizable('disable');
+    });
+
+    socket.on('edit-header', function(msg) {
+        $('#' + msg.id).html(msg.text);
     });
 
     $('#btnNewTask').on("click", function () {

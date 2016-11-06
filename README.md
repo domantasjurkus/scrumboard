@@ -22,7 +22,6 @@ Move sticky note to top of stack (as a brief explanation)
 Sticky note colours - alter colour of sticky notes
 Chat functionality - style of Facebook corner chat / moveable Twitch popout chat window
 
-Edit column header text
 Possibly add column width alteration / change number of colours to 3 or 5
 Export / print / save image copy of page
 Alter column colours - either user selects colour of have colour toggle (night time mode)

@@ -42,6 +42,8 @@
           target.html().replace(/<br( \/)?>/gm, '\n').replace(/&gt;/gm, '>').replace(/&lt;/gm, '<') :
           target.text()
       ).replace(/^\s+/,'').replace(/\s+$/,'');
+      if (old_value == '&nbsp;')
+          old_value = '';
 
       var input = type === 'textarea' ? $('<textarea>') : $('<input>');
       input.val(old_value).
@@ -52,7 +54,7 @@
       if(type === 'textarea') input.css('height', target.parent().height());
 
       var finish = function(){
-        var result = input.val().replace(/^\s+/,'').replace(/\s+$/,'');
+        var result = input.val().replace(/^\s+/,'').replace(/\s+$/,'') || '&nbsp;';
         var html = escape_html(result);
         if(type === 'textarea') html = html.replace(/[\r\n]/gm, '<br />');
         target.html(html);
