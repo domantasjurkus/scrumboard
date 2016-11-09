@@ -26,7 +26,6 @@
 		$('#btnDelete').popover({content: "Delete Board", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});
 		$('#btnSettings').popover({content: "Settings", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});  
 		$('#btnShare').popover({content: "Share", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true}); 
-		$('#btnChat').popover({content: "Chat", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});   
 		$('.sb-board-area').droppable({tolerance: "intersect", drop: function(event, ui) {
 		    var oldPosition = ui.draggable.offset();
 		    $(this).append(ui.draggable);
@@ -67,11 +66,6 @@
 					<i class="fa fa-3x fa-share-alt" aria-hidden="true"></i>
 				</div>
 				<!--//Button: share-->
-				<!--Chat button-->
-				<div id="btnChat" class="sb-option sb-option-default">
-					<i class="fa fa-3x fa-comment" aria-hidden="true"></i>
-				</div>
-				<!--//Button: chat-->
 				<!--Delete board button-->
 				<div id="btnDelete" class="sb-option sb-option-default">
 					<i class="fa fa-3x fa-trash" aria-hidden="true"></i>
