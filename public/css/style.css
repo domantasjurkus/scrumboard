@@ -78,7 +78,21 @@ body {
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 	z-index: 1;
 	cursor: pointer;
-    overflow: hidden;
+}
+
+.sb-text-wrapper {
+	width: max;
+	height: max;
+	min-width: 100px;
+	min-height: 100px;
+	max-width: 400px;
+	max-height: 400px;
+	overflow: hidden;
+}
+
+.sb-text-wrapper > textarea {
+	height: auto;
+	padding-bottom: 10px;
 }
 
 .sb-button {
@@ -128,10 +142,10 @@ body {
 	color:#747879;
 	transition:all 0.1s linear;
 }
-.sb-task-note:hover .sb-delete {
+.sb-task-note:hover .sb-delete{
 	display:block;
 }
-.sb-delete:hover {
+.sb-delete:hover{
 	color:#ffffff;
 }
 .sb-highlighted {

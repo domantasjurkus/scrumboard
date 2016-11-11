@@ -48,11 +48,11 @@
 
       var input = type === 'textarea' ? $('<textarea>') : $('<input>');
       input.val(old_value).
-        css('width', type === 'textarea' ? '100%' : target.width()+target.height() ).
+        //css('width', type === 'textarea' ? '100%' : target.width()+target.height() ).
         css('font-size','100%').
         css('margin',0).attr('id','editable_'+(new Date()*1)).
         addClass('editable');
-      if(type === 'textarea') input.css('height', target.parent().height());
+      if(type === 'textarea') input.css('height', target.parent().parent().height());
       // limit the number of lines to a lucky number
       input.keydown(function(e) {
           if (e.keyCode == 13 && $(this).val().split('\n').length >= 13)
