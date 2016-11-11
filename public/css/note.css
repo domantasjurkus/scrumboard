@@ -1,0 +1,33 @@
+.color-picker {
+	padding: 0px;
+	display: inline-block;
+	width: 30px;
+	height: 100px;
+	position: absolute;
+	left: -27px;
+	top: 0px;
+	display: none;
+}
+
+.sb-task-note:hover .color-picker {
+	display: inline-block;
+}
+
+.color-square {
+	filter:brightness(100%);
+	margin-bottom: -6px;
+	padding: 0;
+	display:inline-block;
+	width: 25px;
+	height: 25px;
+	box-shadow: -3px 3px 6px rgba(0,0,0,0.16);
+}
+.color-square:hover{
+	/*outline: 3px solid #74B9BE;*/
+	filter:brightness(105%);
+}
+
+#color-gray  { background: #CECECE; }
+#color-red   { background: #FF8A80; }
+#color-green { background: #B9F6CA; }
+#color-blue  { background: #B3E5FC; }

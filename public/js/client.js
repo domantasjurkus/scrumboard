@@ -59,19 +59,28 @@ $(function () {
                     }
                 });
                 e.find("h3").html(msg.text);
-                e.find("h3").editable({type: "textarea", action: "click"},
-                  function(e) {
-                      socket.emit('edit', {
-                          id: msg.id,
-                          text: e.value.replace(/\n/g, '<br />')
-                      });
-                  });
+                e.find("h3").editable({
+                    type: "textarea",
+                    action: "click"
+                }, function(e) {
+                    socket.emit('edit', {
+                        id: msg.id,
+                        text: e.value.replace(/\n/g, '<br />')
+                    });
+                });
+
                 e.css(msg.position);
 
                 if (msg.hasOwnProperty('size'))
                     e.css(msg.size);
 
                 $("#" + msg.parent).append(e);
+
+                // Color picker
+                e.find(".color-square").click(function(a) {
+                    var color = $(this).css("background-color");
+                    $(this).parent().parent().css('background-color', color);
+                });
             }
         });
         

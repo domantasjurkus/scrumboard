@@ -2,6 +2,7 @@
 html,
 body {
 	height: 100vh;
+	padding-left: 5px;
 }
 
 .popover {
@@ -35,7 +36,6 @@ body {
 	border-right: 2px solid #74B9BE;
 	transition: background-color 0.2s ease;
 	height: 100vh;
-	cursor: pointer;
 }
 
 .sb-board-region:hover {
@@ -61,20 +61,21 @@ body {
 
 .sb-task-note {
 	position: absolute !important;
-	width: 100px;
-	height: 100px;
+	width: 170px;
+	height: 170px;
 	min-width: 100px;
 	min-height: 100px;
 	max-width: 400px;
 	max-height: 400px;
 	padding: 10px;
-	margin: 5px;
+	margin: 0px;
 	text-align:center;
 	vertical-align:center;
 	background-color: #CECECE;
 	color: #474343;
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 	z-index: 1;
+	cursor: pointer;
 }
 
 .sb-button {
@@ -113,20 +114,20 @@ body {
 	text-decoration: none;
 	transform: scale(1.4);
 }
-.sb-delete{
-		cursor:pointer;
-		display:none;
-		text-align: right;
-		vertical-align:top;
-		position:absolute;
-		top:2px;
-		right:2px;
-		color:#747879;
-		transition:all 0.1s linear;
-	}
-	.sb-task-note:hover .sb-delete{
-		display:block;
-	}
-	.sb-delete:hover{
-		color:#ffffff;
-	}
+.sb-delete {
+	cursor:pointer;
+	display:none;
+	text-align: right;
+	vertical-align:top;
+	position:absolute;
+	top:2px;
+	right:2px;
+	color:#747879;
+	transition:all 0.1s linear;
+}
+.sb-task-note:hover .sb-delete {
+	display:block;
+}
+.sb-delete:hover {
+	color:#ffffff;
+}
