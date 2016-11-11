@@ -14,7 +14,7 @@ $(function () {
     });
 
     socket.on('create', function (msg) {
-        var e = $('<div class="sb-task-note"><div class="sb-delete"><i class="fa fa-2x fa-times" aria-hidden="true"></i></div><h3 style="margin: 8px;"></h3></div>');
+        var e = $('<div class="sb-task-note"><div class="sb-delete"><i class="fa fa-2x fa-times" aria-hidden="true"></i></div><h3 style="margin: 8px; word-wrap: break-word;"></h3></div>');
         e.children('.sb-delete').on("click",function(){
             socket.emit('delete', msg.id);
         });
@@ -52,9 +52,25 @@ $(function () {
         e.find("h3").html(msg.text);
         e.find("h3").editable({type: "textarea", action: "click"},
                               function(e) {
+                                  var note = $('#' + msg.id);
+                                  // make the size larger if necessary,
+                                  //but not too large
+                                  var previousHeight = note.height();
+                                  var previousWidth = note.width();
+                                  note.css({height: 'auto', width: 'auto'});
                                   socket.emit('edit', {
                                       id: msg.id,
-                                      text: e.value.replace(/\n/g, '<br />')
+                                      text: e.value.replace(/\n/g, '<br />'),
+                                      size: {
+                                          height: Math.min(
+                                              Math.max(note.height() + 30,
+                                                       previousHeight),
+                                              note.parent().outerHeight(true)),
+                                          width: Math.min(
+                                              Math.max(note.width() + 10,
+                                                       previousWidth),
+                                              note.parent().outerWidth(true))
+                                      }
                                   });
                               });
         e.css(msg.position);
@@ -77,7 +93,9 @@ $(function () {
     });
 
     socket.on('edit', function(msg) {
-        $("#" + msg.id + " > h3").html(msg.text);
+        var note = $('#' + msg.id);
+        note.find('h3').html(msg.text);
+        note.css(msg.size);
     });
     
     socket.on('delete', function(msg) {
