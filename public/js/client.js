@@ -8,7 +8,7 @@ $(function () {
         for (var i = 0; i < 4; i++) {
             $('#header' + i).editable("click", function(e) {
                 socket.emit('edit-header', {id: e.target.attr('id'),
-                    text: e.value});
+                                            text: e.value});
             });
         }
     });
@@ -33,19 +33,19 @@ $(function () {
                     },
                     start: function(event, ui) {
                         socket.emit('resize-start', {id: event.target.id,
-                           size: ui.originalSize});
+                                                     size: ui.originalSize});
                     }
                 });
                 e.draggable({
-                //snap: '.sb-task-note,.sb-board-region-title,.sb-board-region-title-alt',
-                snap: '.snap-region',
-                snapMode: 'inner',
-                containment: "#board",
-                snapTolerance: 25,
-                start: function(event, ui) {
+                    //snap: '.sb-task-note,.sb-board-region-title,.sb-board-region-title-alt',
+                    snap: '.snap-region',
+                    snapMode: 'inner',
+                    containment: "#board",
+                    snapTolerance: 25,
+                    start: function(event, ui) {
                         $(this).addClass('noclick');
                         socket.emit('drag-start', {id: event.target.id,
-                        position: ui.originalPosition});
+                                                   position: ui.originalPosition});
                     },
                     drag: function (event, ui) {
                         socket.emit('dragging', {
@@ -59,15 +59,29 @@ $(function () {
                     }
                 });
                 e.find("h3").html(msg.text);
-                e.find("h3").editable({
-                    type: "textarea",
-                    action: "click"
-                }, function(e) {
-                    socket.emit('edit', {
-                        id: msg.id,
-                        text: e.value.replace(/\n/g, '<br />')
-                    });
-                });
+                e.find("h3").editable({type: "textarea", action: "click"},
+                                      function(e) {
+                                          var note = $('#' + msg.id);
+                                          // make the size larger if necessary,
+                                          //but not too large
+                                          var previousHeight = note.height();
+                                          var previousWidth = note.width();
+                                          note.css({height: 'auto', width: 'auto'});
+                                          socket.emit('edit', {
+                                              id: msg.id,
+                                              text: e.value.replace(/\n/g, '<br />'),
+                                              size: {
+                                                  height: Math.min(
+                                                      Math.max(note.height() + 30,
+                                                               previousHeight),
+                                                      note.parent().outerHeight(true)),
+                                                  width: Math.min(
+                                                      Math.max(note.width() + 10,
+                                                               previousWidth),
+                                                      note.parent().outerWidth(true))
+                                              }
+                                          });
+                                      });
 
                 e.css(msg.position);
 
@@ -83,7 +97,6 @@ $(function () {
                 });
             }
         });
-        
     });
 
     // Update dragged notes
@@ -98,7 +111,9 @@ $(function () {
     });
 
     socket.on('edit', function(msg) {
-        $("#" + msg.id + " > h3").html(msg.text);
+        var note = $('#' + msg.id);
+        note.find('h3').html(msg.text);
+        note.css(msg.size);
     });
     
     socket.on('delete', function(msg) {
@@ -123,8 +138,8 @@ $(function () {
 
     $('#btnNewTask').on("click", function () {
         socket.emit('create', {text: 'Your New Task!',
-         position: {top: 0, left: 0},
-         parent: 'backlog'});
+                               position: {top: 0, left: 0},
+                               parent: 'backlog'});
     });
     $('#btnUndo').on("click", function() {
         socket.emit('undo');
@@ -137,12 +152,12 @@ $(function () {
     });
 
     $('#btnShare').on("click", function() {
-    	var pic = "static/images/img" +  (Math.floor(Math.random() * 5) + 1) + ".jpg"; 
+        var pic = "static/images/img" +  (Math.floor(Math.random() * 5) + 1) + ".jpg"; 
         swal({
-         title: "Your URL:",
-         text: window.location.href,
-         imageUrl: pic
-     });
+            title: "Your URL:",
+            text: window.location.href,
+            imageUrl: pic
+        });
     });
 
 });

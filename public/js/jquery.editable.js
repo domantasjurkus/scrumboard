@@ -52,6 +52,14 @@
         css('margin',0).attr('id','editable_'+(new Date()*1)).
         addClass('editable');
       if(type === 'textarea') input.css('height', target.parent().height());
+      // limit the number of lines to a lucky number
+      input.keydown(function(e) {
+          if (e.keyCode == 13 && $(this).val().split('\n').length >= 13)
+              return false;
+      });
+      // limit the number of characters for headers
+      if (type != 'textarea')
+          input.attr('maxlength', 40);
 
       var finish = function(){
         var result = input.val().replace(/^\s+/,'').replace(/\s+$/,'') || '&nbsp;';

@@ -138,7 +138,8 @@ io.on('connection', function(socket) {
         if (msg.id in state.state.notes) {
             registerUndo(state);
             state.state.notes[msg.id].text = msg.text;
-            socket.broadcast.in(room).emit('edit', msg);
+            state.state.notes[msg.id].size = msg.size;
+            io.sockets.in(room).emit('edit', msg);
             storage.setItemSync(room, state);
         }
     });
