@@ -78,7 +78,21 @@ body {
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 	z-index: 1;
 	cursor: pointer;
-    overflow: hidden;
+}
+
+.sb-text-wrapper {
+	width: max;
+	height: max;
+	min-width: 100px;
+	min-height: 100px;
+	max-width: 400px;
+	max-height: 400px;
+	overflow: hidden;
+}
+
+.sb-text-wrapper > textarea {
+	height: auto;
+	padding-bottom: 10px;
 }
 
 .sb-button {
@@ -117,7 +131,6 @@ body {
 	text-decoration: none;
 	transform: scale(1.4);
 }
-<<<<<<< HEAD
 .sb-delete {
 	cursor:pointer;
 	display:none;
@@ -129,28 +142,9 @@ body {
 	color:#747879;
 	transition:all 0.1s linear;
 }
-.sb-task-note:hover .sb-delete {
+.sb-task-note:hover .sb-delete{
 	display:block;
 }
-.sb-delete:hover {
+.sb-delete:hover{
 	color:#ffffff;
 }
-=======
-.sb-delete{
-		cursor:pointer;
-		display:none;
-		text-align: right;
-		vertical-align:top;
-		position:absolute;
-		top:2px;
-		right:2px;
-		color:#747879;
-		transition:all 0.1s linear;
-	}
-	.sb-task-note:hover .sb-delete{
-		display:block;
-	}
-	.sb-delete:hover{
-		color:#ffffff;
-	}
->>>>>>> 43708ffcc544884b266b6673c7c04d243f27f0b4
