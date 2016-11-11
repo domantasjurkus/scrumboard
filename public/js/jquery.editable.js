@@ -57,6 +57,9 @@
           if (e.keyCode == 13 && $(this).val().split('\n').length >= 13)
               return false;
       });
+      // limit the number of characters for headers
+      if (type != 'textarea')
+          input.attr('maxlength', 40);
 
       var finish = function(){
         var result = input.val().replace(/^\s+/,'').replace(/\s+$/,'') || '&nbsp;';

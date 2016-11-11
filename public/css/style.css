@@ -21,11 +21,13 @@ body {
 .sb-board-region-title {
 	background-color: #74B9BE;
 	text-align: center;
+    white-space: nowrap;
 }
 
 .sb-board-region-title-alt {
 	background-color: #74B9BE;
 	text-align: center;
+    white-space: nowrap;
 }
 
 .sb-board-region {
