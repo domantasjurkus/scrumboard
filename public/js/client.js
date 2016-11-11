@@ -60,6 +60,9 @@ $(function () {
                 });
                 e.find("h3").html(msg.text);
                 e.find("h3").editable({type: "textarea", action: "click"},
+                                      function() {
+                                          socket.emit('edit-start', msg.id);
+                                      },
                                       function(e) {
                                           var note = $('#' + msg.id);
                                           // make the size larger if necessary,
@@ -109,11 +112,16 @@ $(function () {
     socket.on('resizing', function(msg) {
         $("#" + msg.id).css(msg.size);
     });
+    
+    socket.on('edit-start', function(msg) {
+        $('#' + msg).addClass('sb-highlighted');
+    });
 
     socket.on('edit', function(msg) {
         var note = $('#' + msg.id);
         note.find('h3').html(msg.text);
         note.css(msg.size);
+        note.removeClass('sb-highlighted');
     });
     
     socket.on('delete', function(msg) {

@@ -10,7 +10,7 @@
     return str.replace(/&lt;/gm, '<').replace(/&gt;/gm, '>');
   };
 
-  $.fn.editable = function(event, callback){
+  $.fn.editable = function(event, callforth, callback){
     if(typeof callback !== 'function') callback = function(){};
     if(typeof event === 'string'){
       var trigger = this;
@@ -35,6 +35,7 @@
             $(this).parent().removeClass('noclick');
             return;
         }
+      callforth();
       trigger.unbind(action === 'clickhold' ? 'mousedown' : action);
       if(trigger !== target) trigger.hide();
       var old_value = (

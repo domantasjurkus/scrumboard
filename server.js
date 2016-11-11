@@ -131,6 +131,10 @@ io.on('connection', function(socket) {
             storage.setItemSync(room, state);
         }
     });
+    
+    socket.on('edit-start', function(msg) {
+        socket.broadcast.in(room).emit('edit-start', msg);
+    });
 
     socket.on('edit', function(msg) {
         //console.log('edit: ' + msg.id + ' changed to ' + msg.text);
