@@ -115,4 +115,13 @@ $(function () {
         socket.emit('deleteBoard');
     });
 
+    $('#btnShare').on("click", function() {
+    	var pic = "static/images/img" +  (Math.floor(Math.random() * 5) + 1) + ".jpg"; 
+       	swal({
+  	    title: "Your URL:",
+  	    text: window.location.href,
+  	    imageUrl: pic
+	});
+    });
+
 });
