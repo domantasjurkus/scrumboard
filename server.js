@@ -12,10 +12,16 @@ storage.initSync();
 storage.clearSync(); // to clear all storage, just for testing
 
 app.use('/static', express.static(path.join(__dirname + '/public')));
+
+app.get('/note', function(req, res) {
+    res.sendFile('/public/note_markup.html', { root: __dirname });
+});
+
 app.get('/', function(req, res) {
     //redirect to a random room
-     res.redirect(shortid.generate());
+    res.redirect(shortid.generate());
 });
+
 app.get('*', function(req, res){
     res.sendFile('/public/index.html', { root: __dirname });
 });
