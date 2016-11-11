@@ -10,12 +10,15 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
 		crossorigin="anonymous"></script>
+
 	<script src="/socket.io/socket.io.js"></script>
-        <script src="static/js/jquery.editable.js"></script>
+    <script src="static/js/jquery.editable.js"></script>
 	<script src="static/js/client.js"></script>
-	<link rel="stylesheet" type="text/css" href="static/css/style.css">
 	<script src="static/js/sweetalert.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="static/css/style.css">
 	<link rel="stylesheet" href="static/css/sweetalert.css">
+	<link rel="stylesheet" type="text/css" href="static/css/test.css">
 </head>
 
 <body>
@@ -83,34 +86,48 @@
 		<!--//Row: Toolbar-->
 		<!--Scrumboard row-->
 		<div class="row">
-			<div class="sb-board-container"  >
+			<div class="col-md-12">
+				<div class="col-xs-3 sb-resize" >
+					<div class="row sb-board-region-title">
+						<h2 style="margin-top:10px" id="header0">&nbsp;</h2>
+					</div>
+				</div>
+				<div class="col-xs-3 sb-resize">
+					<div class="row sb-board-region-title-alt">
+						<h2 style="margin-top:10px" id="header1">&nbsp;</h2>
+					</div>
+				</div>
+				<div class="col-xs-3 sb-resize">
+					<div class="row sb-board-region-title">
+						<h2 style="margin-top:10px" id="header2">&nbsp;</h2>
+					</div>
+				</div>
+				<div class="col-xs-3 sb-resize">
+					<div class="row sb-board-region-title-alt">
+						<h2 style="margin-top:10px" id="header3">&nbsp;</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="sb-board-container">
 				<div class="col-md-12" id="board">
-					<div class="col-xs-3 sb-resize sb-board-region" >
-						<div class="row sb-board-region-title">
-							<h2 style="margin-top:10px" id="header0">&nbsp;</h2>
-						</div>
+
+					<div class="col-xs-3 sb-resize sb-board-region snap-region">
 						<div class="row sb-board-area" id="backlog"></div>
 					</div>
-					<div class="col-xs-3 sb-resize  sb-board-region-alt">
-						<div class="row sb-board-region-title-alt">
-							<h2 style="margin-top:10px" id="header1">&nbsp;</h2>
-						</div>
+					<div class="col-xs-3 sb-resize sb-board-region-alt snap-region">
 						<div class="row sb-board-area" id="todo"></div>
 					</div>
-					<div class="col-xs-3 sb-resize sb-board-region">
-						<div class="row sb-board-region-title">
-							<h2 style="margin-top:10px" id="header2">&nbsp;</h2>
-						</div>
+					<div class="col-xs-3 sb-resize sb-board-region snap-region">
 						<div class="row sb-board-area" id="inprogress"></div>
 					</div>
-					<div class="col-xs-3 sb-resize sb-board-region-alt">
-						<div class="row sb-board-region-title-alt">
-							<h2 style="margin-top:10px" id="header3">&nbsp;</h2>
-						</div>
+					<div class="col-xs-3 sb-resize sb-board-region-alt snap-region">
 						<div class="row sb-board-area" id="done"></div>
 					</div>
 				</div>
-				
+
 			</div>
 		</div>
 	</div>

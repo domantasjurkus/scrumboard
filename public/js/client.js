@@ -30,7 +30,9 @@ $(function () {
             }
         });
         e.draggable({
-            snap: '.sb-resize,.sb-task-note',
+            //snap: '.sb-task-note,.sb-board-region-title,.sb-board-region-title-alt',
+            snap: '.snap-region',
+            snapMode: 'inner',
             containment: "#board",
             snapTolerance: 25,
             start: function(event, ui) {
