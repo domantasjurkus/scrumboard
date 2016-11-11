@@ -14,12 +14,21 @@ Not currently in order of priority (do this later)
 2. Scrolling down reveals the white horizontal line across the bottom.
 3. Snapping on the top is to the top of the header line rather than top of note area.
 4. Snapping on right column wall looks slightly different than snapping on the left column wall.
+5. Entering too much text in a note / column header - would suggest limiting header to N characters and just resizing note according to amount of entered text.
+
+###Potential Final Features:
+1. Sticky note colours - alter colour of sticky notes
+2. Edward wanted a chat like / comment feature for users of the app. Quickest implementation might be an anonymous notice board type thing.
+3. Ability to lockdown a particular board to stop users without a password from editing it - Paulius did point out that without user accounts / details there is no straightforward way to reset the password for a particular board. 
+
+Paulius proposed we randomly assign a colour when creating a note.
+
+I proposed we have a colour platte button on the top left each note to change its colour
+
+An easy solution would be to combine the two ideas and have like a circle in the top left of each note which changes it to the next colour in a cycle of say 5 “carefully” selected colours.
 
 ###Suggested Feature List
 
-Move sticky note to top of stack (as a brief explanation)
-
-Sticky note colours - alter colour of sticky notes
 Chat functionality - style of Facebook corner chat / moveable Twitch popout chat window
 
 Possibly add column width alteration / change number of colours to 3 or 5
