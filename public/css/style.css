@@ -4,6 +4,11 @@ body {
 	height: 100vh;
 	padding-left: 5px;
 }
+h2 {
+  	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
 
 .popover {
 	border: 0px;

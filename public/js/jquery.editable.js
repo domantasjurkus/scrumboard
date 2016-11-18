@@ -61,7 +61,7 @@
       });
       // limit the number of characters for headers
       if (type != 'textarea')
-          input.attr('maxlength', 40);
+          input.attr('maxlength', 25);
 
       var finish = function(){
         var result = input.val().replace(/^\s+/,'').replace(/\s+$/,'') || '&nbsp;';
