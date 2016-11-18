@@ -6,10 +6,10 @@ $(function () {
         socket.emit('room', window.location.pathname);
         // make headers editable
         for (var i = 0; i < 4; i++) {
-        var header = "#header" + i;
-            $(header).editable("click", function() {
-                socket.emit('edit-header', {id: $(header).attr('id'),
-                                            text: $(header).value});
+            var header = "#header" + i;
+            $(header).editable("click", function(e) {
+                socket.emit('edit-header', {id: e.target.attr('id'),
+                                            text: e.value});
             });
         }
     });
@@ -19,9 +19,6 @@ $(function () {
         $.ajax({
             url: '/note',
             success: function(markup) {
-                //console.log(data);
-                //noteMarkup = data;
-                //var e = $('<div class="sb-task-note"><div class="sb-delete"><i class="fa fa-2x fa-times" aria-hidden="true"></i></div><h3 style="margin: 8px;"></h3></div>');
                 e = $(markup);
                 e.children('.sb-delete').on("click",function(){
                     socket.emit('delete', msg.id);
@@ -38,7 +35,6 @@ $(function () {
                     }
                 });
                 e.draggable({
-                    //snap: '.sb-task-note,.sb-board-region-title,.sb-board-region-title-alt',
                     snap: '.snap-region',
                     snapMode: 'inner',
                     containment: "#board",
@@ -61,9 +57,6 @@ $(function () {
                 });
                 e.find("h3").html(msg.text);
                 e.find("h3").editable({type: "textarea", action: "click"},
-                                      function() {
-                                          socket.emit('edit-start', msg.id);
-                                      },
                                       function(e) {
                                           var note = $('#' + msg.id);
                                           // make the size larger if necessary,
@@ -83,6 +76,9 @@ $(function () {
                                               text: e.value.replace(/\n/g, '<br />'),
                                               size: newSize
                                           });
+                                      },
+                                      function() {
+                                          socket.emit('edit-start', msg.id);
                                       });
 
                 e.css(msg.position);
@@ -143,6 +139,7 @@ $(function () {
     });
 
     socket.on('edit-header', function(msg) {
+        //console.log(msg.id + ' changed to ' + msg.text);
         $('#' + msg.id).html(msg.text);
     });
 
