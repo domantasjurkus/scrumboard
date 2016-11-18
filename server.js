@@ -165,6 +165,15 @@ io.on('connection', function(socket) {
             io.sockets.in(room).emit('delete', msg);
         }
     });
+
+    socket.on('change-color', function(msg) {
+        var state = getState(room);
+        if (msg.id in state.state.notes) {
+            registerUndo(state);
+            state.state.notes[msg.id].color = msg.color;
+            socket.broadcast.in(room).emit('change-color', msg);
+        }
+    });
     
     socket.on('undo', function() {
         var state = getState(room);

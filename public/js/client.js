@@ -90,12 +90,15 @@ $(function () {
 
                 if (msg.hasOwnProperty('size'))
                     e.css(msg.size);
+                if(msg.hasOwnProperty('color'))
+                    e.css('background-color', msg.color);
 
                 $("#" + msg.parent).append(e);
 
                 // Color picker
                 e.find(".color-square").click(function(a) {
                     var color = $(this).css("background-color");
+                    socket.emit('change-color', {id: msg.id, color: color});
                     $(this).parent().parent().css('background-color', color);
                 });
             }
@@ -142,6 +145,10 @@ $(function () {
 
     socket.on('edit-header', function(msg) {
         $('#' + msg.id).html(msg.text);
+    });
+
+    socket.on('change-color', function(msg) {
+        $('#' + msg.id).css('background-color', msg.color);
     });
 
     $('#btnNewTask').on("click", function () {
