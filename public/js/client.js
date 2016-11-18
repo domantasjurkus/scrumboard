@@ -6,9 +6,10 @@ $(function () {
         socket.emit('room', window.location.pathname);
         // make headers editable
         for (var i = 0; i < 4; i++) {
-            $('#header' + i).editable("click", function(e) {
-                socket.emit('edit-header', {id: e.target.attr('id'),
-                                            text: e.value});
+        var header = "#header" + i;
+            $(header).editable("click", function() {
+                socket.emit('edit-header', {id: $(header).attr('id'),
+                                            text: $(header).value});
             });
         }
     });
