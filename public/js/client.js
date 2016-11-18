@@ -67,22 +67,20 @@ $(function () {
                                           var note = $('#' + msg.id);
                                           // make the size larger if necessary,
                                           //but not too large
-                                          var previousHeight = note.height();
-                                          var previousWidth = note.width();
+                                          var previousHeight = note.outerHeight(true);
+                                          var previousWidth = note.outerWidth(true);
                                           note.css({height: 'auto', width: 'auto'});
+                                          var newSize = {
+                                              height: Math.min(Math.max(note.outerHeight(true) + 20, previousHeight),
+                                                               note.parent().outerHeight(true)),
+                                              width: Math.min(Math.max(note.outerWidth(true) + 10, previousWidth),
+                                                              note.parent().outerWidth(true))
+                                          };
+                                          note.css(newSize);
                                           socket.emit('edit', {
                                               id: msg.id,
                                               text: e.value.replace(/\n/g, '<br />'),
-                                              size: {
-                                                  height: Math.min(
-                                                      Math.max(note.height() + 30,
-                                                               previousHeight),
-                                                      note.parent().outerHeight(true)),
-                                                  width: Math.min(
-                                                      Math.max(note.width() + 10,
-                                                               previousWidth),
-                                                      note.parent().outerWidth(true))
-                                              }
+                                              size: newSize
                                           });
                                       });
 

@@ -143,7 +143,7 @@ io.on('connection', function(socket) {
             registerUndo(state);
             state.state.notes[msg.id].text = msg.text;
             state.state.notes[msg.id].size = msg.size;
-            io.sockets.in(room).emit('edit', msg);
+            socket.broadcast.in(room).emit('edit', msg);
             storage.setItemSync(room, state);
         }
     });
