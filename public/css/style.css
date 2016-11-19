@@ -40,9 +40,9 @@ h2 {
 	background-color: #F1F8F8;
 	min-width: 150px;
 	min-height: 600px;
-	border-right: 2px solid #74B9BE;
-	transition: background-color 0.2s ease;
 	height: 100vh;
+	transition: background-color 0.2s ease;
+	border-left: 2px solid #74B9BE;
 }
 
 .sb-board-region:hover {
@@ -55,12 +55,14 @@ h2 {
 	min-height: 600px;
 	height: 100vh;
 	transition: background-color 0.2s ease;
+	border-left: 2px solid #74B9BE;	
 	border-right: 2px solid #74B9BE;
 }
 
 .sb-board-region-alt:hover {
 	background-color: #D4EDE2;
 }
+
 
 .sb-board-area {
 	height: 100%;
