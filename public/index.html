@@ -30,7 +30,6 @@
 		$('#btnUndo').popover({content: "Undo", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});
 		$('#btnRedo').popover({content: "Redo", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true}); 
 		$('#btnDelete').popover({content: "Delete Board", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});
-		$('#btnSettings').popover({content: "Settings", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});  
 		$('#btnShare').popover({content: "Share", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true}); 
 		$('.sb-board-area').droppable({tolerance: "intersect", drop: function(event, ui) {
 		    var oldPosition = ui.draggable.offset();
@@ -77,11 +76,6 @@
 					<i class="fa fa-3x fa-trash" aria-hidden="true"></i>
 				</div>
 				<!--//Button: redo-->
-				<!--Settings button-->
-				<div id="btnSettings" class="sb-option sb-option-default">
-					<i class="fa fa-3x fa-cog" aria-hidden="true"></i>
-				</div>
-				<!--//Button: settings-->
 			</div>
 		</div>
 		<!--//Row: Toolbar-->
