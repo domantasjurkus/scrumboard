@@ -202,6 +202,11 @@ io.on('connection', function(socket) {
         io.sockets.in(room).emit('deleteBoard');
         storage.setItemSync(room, state);
     });
+
+    socket.on('createBoard', function(msg) {
+        io.sockets.in(room).emit('createBoard',shortid.generate());
+        
+    });
 });
 
 http.listen(3000, function() {

@@ -1,6 +1,5 @@
 $(function () {
     var socket = io();
-
     socket.on('connect', function() {
         // room is defined by the URL
         socket.emit('room', window.location.pathname);
@@ -126,6 +125,11 @@ $(function () {
         $("#" + msg).remove();
     });
 
+    socket.on('createBoard', function(msg){
+        var url = "http://localhost:3000/"+msg;
+        var wind = window.open(url);
+    })
+
     socket.on('deleteBoard', function() {
         $('.sb-task-note').remove();
     });
@@ -169,6 +173,10 @@ $(function () {
             text: window.location.href,
             imageUrl: pic
         });
+    });
+
+    $('#btnNewBoard').on("click", function() {
+       socket.emit('createBoard');
     });
 
 });

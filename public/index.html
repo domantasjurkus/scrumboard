@@ -31,6 +31,7 @@
 		$('#btnRedo').popover({content: "Redo", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true}); 
 		$('#btnDelete').popover({content: "Delete Board", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true});
 		$('#btnShare').popover({content: "Share", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true}); 
+		$('#btnNewBoard').popover({content: "New Board", trigger:"hover",placement: "bottom", html:true, delay:{show:700},animation:true}); 
 		$('.sb-board-area').droppable({tolerance: "intersect", drop: function(event, ui) {
 		    var oldPosition = ui.draggable.offset();
 		    $(this).append(ui.draggable);
@@ -75,7 +76,11 @@
 				<div id="btnDelete" class="sb-option sb-option-default">
 					<i class="fa fa-3x fa-trash" aria-hidden="true"></i>
 				</div>
-				<!--//Button: redo-->
+				<!--//Button: New board-->
+				<div id="btnNewBoard" class="sb-option sb-option-default">
+					<i class="fa fa-3x fa-file" aria-hidden="true"></i>
+				</div>
+				
 			</div>
 		</div>
 		<!--//Row: Toolbar-->
