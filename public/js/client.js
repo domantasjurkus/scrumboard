@@ -126,7 +126,7 @@ $(function () {
     });
 
     socket.on('createBoard', function(msg){
-        var url = "http://localhost:3000/"+msg;
+	var url = window.location.origin + "/" + msg;        
         var wind = window.open(url);
     })
 
@@ -143,7 +143,6 @@ $(function () {
     });
 
     socket.on('edit-header', function(msg) {
-        //console.log(msg.id + ' changed to ' + msg.text);
         $('#' + msg.id).html(msg.text);
     });
 
